@@ -1,13 +1,18 @@
+import BottomSheet from "@/components/BottomSheet/BottomSheet";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { Link } from "expo-router";
+import { useRef } from "react";
 import {
+    Image,
     SafeAreaView,
     StyleSheet,
+    Text,
     TextInput,
     TouchableOpacity,
+    View,
 } from "react-native";
-import { View, Text, Image } from "react-native";
 
 const SearchBar = () => (
     <View style={styles.searchContainer}>
@@ -40,10 +45,18 @@ const SearchBar = () => (
 );
 
 const CustomHeader = () => {
+    const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+    const openModal = () => {
+        bottomSheetRef.current?.present();
+    };
+
     return (
         <SafeAreaView style={styles.safeArea}>
+            <BottomSheet ref={bottomSheetRef} />
+
             <View style={styles.container}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={openModal}>
                     <Image
                         style={styles.bike}
                         source={require("@/assets/images/bike.png")}
