@@ -1,6 +1,11 @@
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Stack } from "expo-router";
+import Colors from "@/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
+import {
+    BottomSheetModalProvider,
+    TouchableOpacity,
+} from "@gorhom/bottom-sheet";
+import { Stack, useNavigation } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const unstable_settings = {
@@ -8,6 +13,8 @@ export const unstable_settings = {
 };
 
 export default function RootLayoutNav() {
+    const navigation = useNavigation();
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <BottomSheetModalProvider>
@@ -16,6 +23,29 @@ export default function RootLayoutNav() {
                         name="index"
                         options={{
                             header: () => <CustomHeader />,
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name="(modal)/filter"
+                        options={{
+                            presentation: "modal",
+                            headerTitle: "Filter",
+                            headerShadowVisible: false,
+                            headerStyle: { backgroundColor: Colors.lightGrey },
+                            headerLeft: () => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigation.goBack();
+                                    }}
+                                >
+                                    <Ionicons
+                                        name="close-outline"
+                                        size={28}
+                                        color={Colors.primary}
+                                    />
+                                </TouchableOpacity>
+                            ),
                         }}
                     />
                 </Stack>
