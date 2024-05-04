@@ -16,7 +16,7 @@ export default function Restaurants() {
         >
             {restaurants.map((restaurant, index) => {
                 return (
-                    <Link href={"/"} key={index} asChild>
+                    <Link href={"/details"} key={index} asChild>
                         <TouchableOpacity>
                             <View style={styles.restaurantCard} key={index}>
                                 <Image
