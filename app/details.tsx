@@ -1,13 +1,39 @@
 import Colors from "@/constants/Colors";
 import ParallaxScrollView from "@/parallax/ParallaxScrollView";
 import React, { useLayoutEffect } from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    SectionList,
+    ListRenderItem,
+} from "react-native";
 import { restaurant } from "@/assets/data/restaurant";
-import { useNavigation } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function Details() {
     const navigation = useNavigation();
+
+    const DATA = restaurant.food.map((item, index) => {
+        return { title: item.category, data: item.meals, index };
+    });
+
+    const renderItem: ListRenderItem<any> = ({ item, index }) => (
+        <Link href={"/"} asChild>
+            <TouchableOpacity style={styles.itemRow}>
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.dish}>{item.name}</Text>
+                    <Text style={styles.dishText}>{item.info}</Text>
+                    <Text style={styles.dishText}>${item.price}</Text>
+                </View>
+
+                <Image source={item.img} style={styles.dishimg} />
+            </TouchableOpacity>
+        </Link>
+    );
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -74,8 +100,50 @@ export default function Details() {
                 )}
             >
                 <View style={styles.detailsContainer}>
-                    <Text>DETAILS</Text>
+                    <Text style={styles.restaurantName}>{restaurant.name}</Text>
+                    <Text style={styles.restaurantDescription}>
+                        {restaurant.delivery} •{" "}
+                        {restaurant.tags.map(
+                            (tag, index) =>
+                                `${tag}${
+                                    index < restaurant.tags.length - 1
+                                        ? " • "
+                                        : ""
+                                }`
+                        )}
+                    </Text>
+                    <Text style={styles.restaurantAbout}>
+                        {restaurant.about}
+                    </Text>
                 </View>
+
+                <SectionList
+                    keyExtractor={(item, index) => `${item.id + index}`}
+                    scrollEnabled={false}
+                    sections={DATA}
+                    renderItem={renderItem}
+                    renderSectionHeader={({ section: { title, index } }) => (
+                        <Text style={styles.sectionHeader}>{title}</Text>
+                    )}
+                    ItemSeparatorComponent={() => (
+                        <View
+                            style={{
+                                height: 1,
+                                backgroundColor: Colors.grey,
+                                marginHorizontal: 16,
+                            }}
+                        ></View>
+                    )}
+                    SectionSeparatorComponent={() => (
+                        <View
+                            style={{
+                                height: 1,
+                                backgroundColor: Colors.grey,
+                            }}
+                        ></View>
+                    )}
+                    contentContainerStyle={{ paddingBottom: 50 }}
+                />
             </ParallaxScrollView>
         </>
     );
@@ -108,4 +176,51 @@ const styles = StyleSheet.create({
         fontSize: 20,
         margin: 10,
     },
+
+    restaurantName: {
+        fontSize: 30,
+        margin: 16,
+        fontWeight: "bold",
+        color: Colors.primary,
+    },
+    restaurantDescription: {
+        fontSize: 16,
+        marginHorizontal: 16,
+        lineHeight: 22,
+        color: Colors.medium,
+    },
+    restaurantAbout: {
+        fontSize: 16,
+        marginHorizontal: 16,
+        marginTop: 8,
+        lineHeight: 22,
+        color: Colors.medium,
+    },
+
+    sectionHeader: {
+        fontSize: 22,
+        fontWeight: "bold",
+        marginTop: 30,
+        margin: 16,
+    },
+
+    itemRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 16,
+        backgroundColor: "white",
+        gap: 8,
+    },
+
+    dish: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    dishText: {
+        fontSize: 14,
+        color: Colors.medium,
+        paddingVertical: 4,
+    },
+    dishimg: { height: 80, width: 80, borderRadius: 4 },
 });
