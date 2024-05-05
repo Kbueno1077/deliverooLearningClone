@@ -62,7 +62,13 @@ function Filter() {
     }, [items]);
 
     const renderItem: ListRenderItem<Category> = ({ item, index }) => (
-        <View style={styles.row}>
+        <View
+            style={[
+                styles.row,
+                index === 0 && styles.rowFirst,
+                index === items.length - 1 && styles.rowLast,
+            ]}
+        >
             <Text style={styles.itemText}>
                 {item.name} ({item.count})
             </Text>
@@ -279,6 +285,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "white",
     },
+    rowFirst: { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+    rowLast: { borderBottomLeftRadius: 8, borderBottomRightRadius: 8 },
 });
 
 export default Filter;
