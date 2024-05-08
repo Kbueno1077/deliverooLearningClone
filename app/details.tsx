@@ -55,7 +55,10 @@ export default function Details() {
     };
 
     const renderItem: ListRenderItem<any> = ({ item, index }) => (
-        <Link href={"/"} asChild>
+        <Link
+            href={{ pathname: "/(modal)/dish", params: { id: item.id } }}
+            asChild
+        >
             <TouchableOpacity style={styles.itemRow}>
                 <View style={{ flex: 1 }}>
                     <Text style={styles.dish}>{item.name}</Text>
