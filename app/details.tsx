@@ -227,7 +227,7 @@ export default function Details() {
                         edges={["bottom"]}
                         style={{ backgroundColor: "white" }}
                     >
-                        <Link href={"/"} asChild>
+                        <Link href={"/basket"} asChild>
                             <TouchableOpacity style={styles.fullButton}>
                                 <Text style={styles.basket}>{items}</Text>
                                 <Text style={styles.footerText}>
